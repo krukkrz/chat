@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ChatService } from '../services/chat.service';
 
 @Component({
@@ -6,19 +6,19 @@ import { ChatService } from '../services/chat.service';
   templateUrl: './client.component.html',
   styleUrls: ['./client.component.css']
 })
-export class ClientComponent implements OnInit {
+export class ClientComponent implements OnInit, OnDestroy {
 
   message: string
   messages: string[] = []
+  conversation_id
 
   constructor(
     private chatService: ChatService
   ){}
   
   sendMessage(){
-    let conversation_id = sessionStorage.getItem('ID')
-
-    this.chatService.sendMessage(this.message, conversation_id)
+    this.conversation_id = sessionStorage.getItem('ID')
+    this.chatService.sendMessage(this.message, this.conversation_id)
     this.message = '';
   }
   
@@ -28,6 +28,10 @@ export class ClientComponent implements OnInit {
     .subscribe((message: string) => {
       this.messages.push(message)
     })
+  }
+
+  ngOnDestroy(){
+    this.chatService.leaveRoom();
   }
 
 }

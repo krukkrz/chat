@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ChatService } from '../services/chat.service';
 
 @Component({
   selector: 'app-host',
@@ -7,9 +8,25 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HostComponent implements OnInit {
 
-  constructor() { }
+  rooms = []
+
+  constructor(
+    private chatService: ChatService
+  ) { }
 
   ngOnInit() {
+    this.getRooms()
+  }
+
+  private getRooms() {
+    this.chatService.getRooms().subscribe(
+      (data) => {
+        this.rooms = data
+      }, (err)=>console.error(err)
+    );
+    console.log('clients: ');
+    console.log(this.rooms);
+    
   }
 
 }

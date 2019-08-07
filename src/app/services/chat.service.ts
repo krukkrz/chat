@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/internal/Observable';
 export class ChatService{
     private url = 'http://localhost:3000'
     private socket
+    clients = []
 
     constructor(){
        this.socket = io(this.url) 
@@ -23,5 +24,18 @@ export class ChatService{
                 observer.next(data);
             });
         });
+    }
+
+    public leaveRoom(){
+        this.socket.emit('disconnect');
+    }
+
+    public getRooms(){
+        return Observable.create((observer) => {
+            this.socket.on('clients', function(){
+                console.log('WORKS!');
+            })
+            observer.next('someshit');
+        })
     }
 }
