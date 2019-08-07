@@ -8,15 +8,19 @@ export class ChatService{
     constructor(){
        this.socket = io(this.url) 
     }
-
-    public sendMessage(message){
-        this.socket.emit('new-message', message)
+    
+    public sendMessage(message, conversation_id){
+        this.socket.emit('subscribe', conversation_id);
+        this.socket.emit('new-message', {
+            room: conversation_id,
+            message: message
+        })
     }
 
     public getMessages = () => {
         return Observable.create((observer) => {
-            this.socket.on('new-message', (message) => {
-                observer.next(message);
+            this.socket.on('new-message', (data) => {
+                observer.next(data);
             });
         });
     }

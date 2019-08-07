@@ -16,7 +16,9 @@ export class ClientComponent implements OnInit {
   ){}
   
   sendMessage(){
-    this.chatService.sendMessage(this.message)
+    let conversation_id = sessionStorage.getItem('ID')
+
+    this.chatService.sendMessage(this.message, conversation_id)
     this.message = '';
   }
   

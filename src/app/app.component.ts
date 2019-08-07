@@ -6,7 +6,12 @@ import { ChatService } from './services/chat.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
-  
+export class AppComponent implements OnInit{
 
+  ngOnInit(): void {
+    let conversation_id: any
+    conversation_id = Math.random()
+    sessionStorage.setItem('ID', conversation_id)
+  }
+  
 }
