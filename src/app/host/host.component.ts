@@ -8,7 +8,7 @@ import { ChatService } from '../services/chat.service';
 })
 export class HostComponent implements OnInit {
 
-  rooms = []
+  rooms = [];
 
   constructor(
     private chatService: ChatService
@@ -20,13 +20,13 @@ export class HostComponent implements OnInit {
 
   private getRooms() {
     this.chatService.getRooms().subscribe(
-      (data) => {
-        this.rooms = data
-      }, (err)=>console.error(err)
-    );
-    console.log('clients: ');
-    console.log(this.rooms);
-    
+        (data) => {
+          data.forEach(d => {
+            this.rooms.push(d)
+          });
+        }, (err)=>console.error(err)
+      );
+      console.log('clients: ', this.rooms);          
   }
 
 }

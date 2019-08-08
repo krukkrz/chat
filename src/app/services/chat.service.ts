@@ -32,10 +32,10 @@ export class ChatService{
 
     public getRooms(){
         return Observable.create((observer) => {
-            this.socket.on('clients', function(){
-                console.log('WORKS!');
-            })
-            observer.next('someshit');
+            this.socket.emit('clients'); 
+            this.socket.on('get-clients', (m)=>{
+                observer.next(m)
+            });
         })
     }
 }
