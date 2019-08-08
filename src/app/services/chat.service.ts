@@ -36,8 +36,8 @@ export class ChatService{
     }
 
     public getMessagesForHost(conversation_id) {
-        this.socket.emit('subscribe', conversation_id);
         return Observable.create((observer) => {
+            this.socket.emit('subscribe', conversation_id);
             this.socket.on('new-message', (data) => {
                 observer.next(data);
             });
