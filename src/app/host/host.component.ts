@@ -9,6 +9,9 @@ import { ChatService } from '../services/chat.service';
 export class HostComponent implements OnInit {
 
   rooms = [];
+  message: string;
+  messages: string[] = []
+
 
   constructor(
     private chatService: ChatService
@@ -29,4 +32,18 @@ export class HostComponent implements OnInit {
       console.log('clients: ', this.rooms);          
   }
 
+  sendMessage(conversation_id){
+    this.chatService.sendMessageFromHost(this.message, conversation_id)
+    this.message = '';
+  }
+
+  getMessages(conversation_id){
+    this.chatService
+    .getMessagesForHost(conversation_id)
+    .subscribe((message: string) => {
+      this.messages.push(message)
+    })
+  }
+
+  
 }

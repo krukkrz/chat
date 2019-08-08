@@ -17,8 +17,7 @@ export class ClientComponent implements OnInit, OnDestroy {
   ){}
   
   sendMessage(){
-    this.conversation_id = sessionStorage.getItem('ID')
-    this.chatService.sendMessage(this.message, this.conversation_id)
+    this.chatService.sendMessage(this.message)
     this.message = '';
   }
   

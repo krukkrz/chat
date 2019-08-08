@@ -1,0 +1,6 @@
+.message_window{
+    min-height: 100px;
+    margin: 10px;
+    border-style: solid;
+    width: 300px;
+}

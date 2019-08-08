@@ -10,7 +10,16 @@ export class ChatService{
        this.socket = io(this.url) 
     }
     
-    public sendMessage(message, conversation_id){
+    public sendMessageFromHost(message, conversation_id){
+        this.socket.emit('subscribe', conversation_id);
+        this.socket.emit('new-message', {
+            room: conversation_id,
+            message: message
+        })
+    }
+
+    public sendMessage(message){
+        let conversation_id = this.socket.id;
         this.socket.emit('subscribe', conversation_id);
         this.socket.emit('new-message', {
             room: conversation_id,
@@ -19,6 +28,15 @@ export class ChatService{
     }
 
     public getMessages = () => {
+        return Observable.create((observer) => {
+            this.socket.on('new-message', (data) => {
+                observer.next(data);
+            });
+        });
+    }
+
+    public getMessagesForHost(conversation_id) {
+        this.socket.emit('subscribe', conversation_id);
         return Observable.create((observer) => {
             this.socket.on('new-message', (data) => {
                 observer.next(data);
@@ -38,4 +56,5 @@ export class ChatService{
             });
         })
     }
+    
 }
