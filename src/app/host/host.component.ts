@@ -8,40 +8,68 @@ import { ChatService } from '../services/chat.service';
 })
 export class HostComponent implements OnInit {
 
-  rooms = [];
+  rooms: any[] = [];
   message: string;
-  messages: string[] = []
+  messages: any[] = []
+  messagesByRoom: any[] = []
 
 
   constructor(
     private chatService: ChatService
-  ) { }
-
-  ngOnInit() {
+  ) {
     this.getRooms()
   }
-
+  
+  ngOnInit() {
+    this.getMessages()
+    console.log('messages', this.messages);      
+  }
+  
   private getRooms() {
     this.chatService.getRooms().subscribe(
-        (data) => {
-          data.forEach(d => {
-            this.rooms.push(d)
-          });
-        }, (err)=>console.error(err)
+      (data) => {
+        data.forEach(d => {
+          this.rooms.push(d)
+        });
+      }, (err)=>console.error(err)
       );
-      console.log('clients: ', this.rooms);          
+      console.log('clients', this.rooms);
+    }
+    
+    sendMessage(conversation_id){
+      this.chatService.sendMessageFromHost(this.message, conversation_id)
+      this.message = '';
+    }
+    
+    private getMessages(){
+      this.chatService
+      .getMessages()
+      .subscribe((message: string) => {
+        console.log('message', message);      
+        this.messages.push(message)
+      })
+      console.log('rooms', this.rooms);    
+      
+      this.messagesByRoom = []
+      this.rooms.forEach(r => {
+        console.log('room', r);     
+        this.groupMessagesByRoom(r)
+      })
+      console.log('messages by room', this.messagesByRoom);      
   }
 
-  sendMessage(conversation_id){
-    this.chatService.sendMessageFromHost(this.message, conversation_id)
-    this.message = '';
-  }
-
-  getMessages(conversation_id){
-    this.chatService
-    .getMessagesForHost(conversation_id)
-    .subscribe((message: string) => {
-      this.messages.push(message)
+  private groupMessagesByRoom(room){
+    console.log('hi');
+    
+    let messages: string[] = []
+    this.messages.forEach(m => {
+      if(m.room == room){
+        messages.push(m.message)
+      }
+    })
+    this.messagesByRoom.push({
+      room: room,
+      messages: messages
     })
   }
 

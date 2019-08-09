@@ -1,10 +1,10 @@
 <h3>Connected clients</h3>
-<div *ngFor = "let room of rooms">
+<div *ngFor = "let room of messagesByRoom">
   <div class="message_window">
-    <h5>Client: {{room}}</h5>
+    <h5>Client: {{room.room}}</h5>
       <input [(ngModel)]="message" (keyup)="$event.keyCode == 13 && sendMessage(room)"/>
-      <button (click)="sendMessage(room)">Send</button>
-      <div *ngFor="let message of messages">
+      <button (click)="sendMessage(room.room)">Send</button>
+      <div *ngFor="let message of room.messages">
         {{message}}
       </div>
   </div>
