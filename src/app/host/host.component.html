@@ -2,10 +2,12 @@
 <div *ngFor = "let room of messagesByRoom">
   <div class="message_window">
     <h5>Client: {{room.room}}</h5>
+    <div class="scrollable" style="height: 100px">
+        <div *ngFor="let message of room.messages">
+          {{message}}
+        </div>
+      </div>
       <input [(ngModel)]="message" (keyup)="$event.keyCode == 13 && sendMessage(room.room)"/>
       <button (click)="sendMessage(room.room)">Send</button>
-      <div *ngFor="let message of room.messages">
-        {{message}}
-      </div>
   </div>
 </div>

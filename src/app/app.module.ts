@@ -8,6 +8,7 @@ import { ClientComponent } from './client/client.component';
 import { HostComponent } from './host/host.component';
 import { AppRouting } from './app-routing.module';
 import { RouterModule } from '@angular/router';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 @NgModule({
@@ -20,7 +21,8 @@ import { RouterModule } from '@angular/router';
     BrowserModule,
     FormsModule,
     AppRouting,
-    RouterModule
+    RouterModule,
+    BrowserAnimationsModule
   ],
   providers: [ChatService],
   bootstrap: [AppComponent]
