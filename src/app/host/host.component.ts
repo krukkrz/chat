@@ -8,17 +8,21 @@ import { ChatService } from '../services/chat.service';
 })
 export class HostComponent implements OnInit {
 
-  rooms = [];
+  rooms: any[] = [];
   message: string;
-  messages: string[] = []
-  messagesPerRoom: any[] = []
+  messages: any[] = []
+  messagesByRoom: any[] = []
+
 
   constructor(
     private chatService: ChatService
-  ) { }
-
-  ngOnInit() {
+  ) {
     this.getRooms()
+  }
+  
+  ngOnInit() {
+    this.getMessages()
+    console.log('messages', this.messages);      
   }
   
   private getRooms() {
@@ -27,40 +31,47 @@ export class HostComponent implements OnInit {
         data.forEach(d => {
           this.rooms.push(d)
         });
-        this.assignMessagesToRoom()
       }, (err)=>console.error(err)
       );
-      console.log('clients: ', this.rooms);          
+      console.log('clients', this.rooms);
     }
     
-    public sendMessage(conversation_id){
-    this.chatService.sendMessageFromHost(this.message, conversation_id)
-    this.message = '';
+    sendMessage(conversation_id){
+      this.chatService.sendMessageFromHost(this.message, conversation_id)
+      this.message = '';
+    }
+    
+    private getMessages(){
+      this.chatService
+      .getMessages()
+      .subscribe((message: string) => {
+        console.log('message', message);      
+        this.messages.push(message)
+      })
+      console.log('rooms', this.rooms);    
+      
+      this.messagesByRoom = []
+      this.rooms.forEach(r => {
+        console.log('room', r);     
+        this.groupMessagesByRoom(r)
+      })
+      console.log('messages by room', this.messagesByRoom);      
   }
 
-  private getMessages(conversation_id){
-    let messages: string[] = []
-    this.chatService
-    .getMessagesForHost(conversation_id)
-    .subscribe((message: string) => {
-      messages.push(message)
-      console.log('id: ', conversation_id);
-      console.log('message: ', message);      
-    })    
-    return messages
-  }
-  
-  private assignMessagesToRoom(){
+  private groupMessagesByRoom(room){
+    console.log('hi');
     
-    this.rooms.forEach(room =>{
-      let messages = this.getMessages(room)
-      let msgPerRoom = {
-        room: room,
-        messages: messages
+    let messages: string[] = []
+    this.messages.forEach(m => {
+      if(m.room == room){
+        messages.push(m.message)
       }
-      this.messagesPerRoom.push(msgPerRoom)
     })
-    console.log(this.messagesPerRoom);
+    this.messagesByRoom.push({
+      room: room,
+      messages: messages
+    })
+    console.log(this.messagesByRoom);
 
   }
 

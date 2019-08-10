@@ -11,6 +11,7 @@ export class ChatService{
     }
     
     public sendMessageFromHost(message, conversation_id){
+        console.log(conversation_id);        
         this.socket.emit('subscribe', conversation_id);
         this.socket.emit('new-message', {
             room: conversation_id,
@@ -35,14 +36,14 @@ export class ChatService{
         });
     }
 
-    public getMessagesForHost(conversation_id) {
-        return Observable.create((observer) => {
-            this.socket.emit('subscribe', conversation_id);
-            this.socket.on('new-message', (data) => {
-                observer.next(data);
-            });
-        });
-    }
+    // public getMessagesForHost(conversation_id) {
+    //     this.socket.emit('subscribe', conversation_id);
+    //     return Observable.create((observer) => {
+    //         this.socket.on('new-message', (data) => {
+    //             observer.next(data);
+    //         });
+    //     });
+    // }
 
     public leaveRoom(){
         this.socket.emit('disconnect');

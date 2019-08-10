@@ -9,7 +9,7 @@ import { ChatService } from '../services/chat.service';
 export class ClientComponent implements OnInit, OnDestroy {
 
   message: string
-  messages: string[] = []
+  messages: any[] = []
   conversation_id
 
   constructor(
@@ -22,11 +22,15 @@ export class ClientComponent implements OnInit, OnDestroy {
   }
   
   ngOnInit() {
+    this.getMessages();
+  }
+
+  private getMessages() {
     this.chatService
-    .getMessages()
-    .subscribe((message: string) => {
-      this.messages.push(message)
-    })
+      .getMessages()
+      .subscribe((message: string) => {
+        this.messages.push(message);
+      });
   }
 
   ngOnDestroy(){

@@ -1,5 +1,5 @@
 <h3>Connected clients</h3>
-<div *ngFor = "let room of messagesPerRoom">
+<div *ngFor = "let room of messagesByRoom">
   <div class="message_window">
     <h5>Client: {{room.room}}</h5>
       <input [(ngModel)]="message" (keyup)="$event.keyCode == 13 && sendMessage(room)"/>
