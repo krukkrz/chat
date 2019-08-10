@@ -1,5 +1,24 @@
-<input [(ngModel)]="message" (keyup)="$event.keyCode == 13 && sendMessage()"/>
-<button (click)="sendMessage()">Send</button>
-<div *ngFor="let message of messages">
-  {{message.message}}
+<mat-toolbar color="primary" style="margin-bottom: 20px">
+  Client's view
+</mat-toolbar>
+
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-lg-6">
+      <mat-card>
+        <div class="scrollable" style="height: 300px">
+          <div class="msg" *ngFor="let message of messages">
+            {{message.message}}
+          </div>
+        </div>
+        <br>
+        <div class="form-inline">
+          <input class="form-control mr-sm-2" style="width: 80%" [(ngModel)]="message" (keyup)="$event.keyCode == 13 && sendMessage()"/>
+          <button mat-raised-button color="primary" (click)="sendMessage()">Send</button>
+        </div>
+      </mat-card>
+    </div>
+  </div>
 </div>
+
+

@@ -29,7 +29,8 @@ export class ClientComponent implements OnInit, OnDestroy {
     this.chatService
       .getMessages()
       .subscribe((message: string) => {
-        this.messages.push(message);
+        // adds new message at the beginning
+        this.messages = [message].concat(this.messages);
         console.log(this.messages);
       });
   }

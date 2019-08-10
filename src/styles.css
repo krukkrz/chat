@@ -1,8 +1,16 @@
 /* You can add global styles to this file, and also import other style files */
 
 html, body { height: 100%; }
-body { margin: 0; font-family: 'Roboto', sans-serif; }
+body { margin: 0; font-family: 'Roboto', sans-serif; background-color: rgb(240, 240, 240)}
 
 .scrollable{
-    overflow-y: scroll
+    overflow-x: hidden;
+    overflow-y: auto;
+    transform: rotate(180deg);
+    text-align:left;
+}
+
+.msg{
+    overflow: hidden;
+    transform: rotate(180deg);
 }

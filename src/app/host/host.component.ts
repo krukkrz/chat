@@ -16,10 +16,15 @@ export class HostComponent implements OnInit {
 
   constructor(
     private chatService: ChatService
-  ) {
+  ) { }
+  
+  
+  
+  ngOnInit() {
     this.getRooms()
+    this.getMessages()
   }
-
+  
   private getRooms() {
     this.chatService.getRooms().subscribe(
       (data) => {
@@ -32,12 +37,6 @@ export class HostComponent implements OnInit {
     );
   }
 
-
-  ngOnInit() {
-    this.getMessages()
-    console.log('messages', this.messages);      
-  }
-    
   sendMessage(conversation_id){
     this.chatService.sendMessageFromHost(this.message, conversation_id)
     this.message = '';
@@ -56,10 +55,10 @@ export class HostComponent implements OnInit {
     this.chatService
     .getMessages()
     .subscribe((message: string) => {
-      this.messages.push(message)
+      // adds new message at the beginning
+      this.messages = [message].concat(this.messages);
       console.log('host component getMessages() message', message);      
       this.messagesByRoom = []
-      console.log(this.rooms.length);
       
       this.rooms.forEach(r => {
         this.groupMessagesByRoom(r)

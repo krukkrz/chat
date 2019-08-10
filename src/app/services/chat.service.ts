@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/internal/Observable';
 export class ChatService{
     private url = 'http://localhost:3000'
     private socket
+
     clients = []
 
     constructor(){
@@ -11,7 +12,6 @@ export class ChatService{
     }
     
     public sendMessageFromHost(message, conversation_id){
-        // console.log(conversation_id);        
         this.socket.emit('subscribe', conversation_id);
         this.socket.emit('new-message', {
             room: conversation_id,
@@ -37,23 +37,12 @@ export class ChatService{
     }
 
     public subscribeHost(conversation_id){
-        console.log('subscribe',conversation_id);
-        
         this.socket.emit('subscribe', conversation_id);
         this.socket.emit('new-message', {
             room: conversation_id,
             message: "Host connected"
         })
     }
-
-    // public getMessagesForHost(conversation_id) {
-    //     this.socket.emit('subscribe', conversation_id);
-    //     return Observable.create((observer) => {
-    //         this.socket.on('new-message', (data) => {
-    //             observer.next(data);
-    //         });
-    //     });
-    // }
 
     public leaveRoom(){
         this.socket.emit('disconnect');
