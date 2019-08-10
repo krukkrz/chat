@@ -30,6 +30,7 @@ export class ClientComponent implements OnInit, OnDestroy {
       .getMessages()
       .subscribe((message: string) => {
         this.messages.push(message);
+        console.log(this.messages);
       });
   }
 

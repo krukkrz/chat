@@ -11,7 +11,7 @@ export class ChatService{
     }
     
     public sendMessageFromHost(message, conversation_id){
-        console.log(conversation_id);        
+        // console.log(conversation_id);        
         this.socket.emit('subscribe', conversation_id);
         this.socket.emit('new-message', {
             room: conversation_id,
@@ -34,6 +34,16 @@ export class ChatService{
                 observer.next(data);
             });
         });
+    }
+
+    public subscribeHost(conversation_id){
+        console.log('subscribe',conversation_id);
+        
+        this.socket.emit('subscribe', conversation_id);
+        this.socket.emit('new-message', {
+            room: conversation_id,
+            message: "Host connected"
+        })
     }
 
     // public getMessagesForHost(conversation_id) {

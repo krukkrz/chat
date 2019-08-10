@@ -8,7 +8,7 @@ import { ChatService } from '../services/chat.service';
 })
 export class HostComponent implements OnInit {
 
-  rooms: any[] = [];
+  rooms: string[] = [];
   message: string;
   messages: any[] = []
   messagesByRoom: any[] = []
@@ -19,48 +19,56 @@ export class HostComponent implements OnInit {
   ) {
     this.getRooms()
   }
-  
-  ngOnInit() {
-    this.getMessages()
-    console.log('messages', this.messages);      
-  }
-  
+
   private getRooms() {
     this.chatService.getRooms().subscribe(
       (data) => {
         data.forEach(d => {
           this.rooms.push(d)
+          this.chatService.subscribeHost(d)
         });
+        this.getRoomsWithEmptyMessages()        
       }, (err)=>console.error(err)
-      );
-      console.log('clients', this.rooms);
-    }
+    );
+  }
+
+
+  ngOnInit() {
+    this.getMessages()
+    console.log('messages', this.messages);      
+  }
     
-    sendMessage(conversation_id){
-      this.chatService.sendMessageFromHost(this.message, conversation_id)
-      this.message = '';
-    }
-    
-    private getMessages(){
-      this.chatService
-      .getMessages()
-      .subscribe((message: string) => {
-        console.log('message', message);      
-        this.messages.push(message)
+  sendMessage(conversation_id){
+    this.chatService.sendMessageFromHost(this.message, conversation_id)
+    this.message = '';
+  }
+
+  private getRoomsWithEmptyMessages(){
+    this.rooms.forEach( r => {
+      this.messagesByRoom.push({
+        room: r,
+        messages: []
       })
-      console.log('rooms', this.rooms);    
-      
+    })
+  }
+    
+  private getMessages(){
+    this.chatService
+    .getMessages()
+    .subscribe((message: string) => {
+      this.messages.push(message)
+      console.log('host component getMessages() message', message);      
       this.messagesByRoom = []
+      console.log(this.rooms.length);
+      
       this.rooms.forEach(r => {
-        console.log('room', r);     
         this.groupMessagesByRoom(r)
       })
-      console.log('messages by room', this.messagesByRoom);      
+    })
+    console.log('messages by room', this.messagesByRoom);          
   }
 
   private groupMessagesByRoom(room){
-    console.log('hi');
-    
     let messages: string[] = []
     this.messages.forEach(m => {
       if(m.room == room){
@@ -71,9 +79,5 @@ export class HostComponent implements OnInit {
       room: room,
       messages: messages
     })
-    console.log(this.messagesByRoom);
-
   }
-
-  
 }
