@@ -13,16 +13,14 @@ export class HostComponent implements OnInit {
   messages: any[] = []
   messagesByRoom: any[] = []
 
-
   constructor(
     private chatService: ChatService
   ) { }
   
-  
-  
   ngOnInit() {
     this.getRooms()
     this.getMessages()
+
   }
   
   private getRooms() {
@@ -30,7 +28,7 @@ export class HostComponent implements OnInit {
       (data) => {
         data.forEach(d => {
           this.rooms.push(d)
-          this.chatService.subscribeHost(d)
+          this.chatService.sendMessageFromHost('Host connected', d)
         });
         this.getRoomsWithEmptyMessages()        
       }, (err)=>console.error(err)
@@ -55,14 +53,13 @@ export class HostComponent implements OnInit {
     this.chatService
     .getMessages()
     .subscribe((message: string) => {
-      // adds new message at the beginning
       this.messages = [message].concat(this.messages);
-      console.log('host component getMessages() message', message);      
       this.messagesByRoom = []
       
       this.rooms.forEach(r => {
         this.groupMessagesByRoom(r)
       })
+
     })
     console.log('messages by room', this.messagesByRoom);          
   }

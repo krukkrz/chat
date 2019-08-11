@@ -1,5 +1,6 @@
 import * as io from 'socket.io-client';
 import { Observable } from 'rxjs/internal/Observable';
+import { when } from 'q';
 
 export class ChatService{
     private url = 'http://localhost:3000'
@@ -34,14 +35,6 @@ export class ChatService{
                 observer.next(data);
             });
         });
-    }
-
-    public subscribeHost(conversation_id){
-        this.socket.emit('subscribe', conversation_id);
-        this.socket.emit('new-message', {
-            room: conversation_id,
-            message: "Host connected"
-        })
     }
 
     public leaveRoom(){

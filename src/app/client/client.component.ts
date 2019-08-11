@@ -14,7 +14,7 @@ export class ClientComponent implements OnInit, OnDestroy {
 
   constructor(
     private chatService: ChatService
-  ){}
+  ){  }
   
   sendMessage(){
     this.chatService.sendMessage(this.message)
@@ -24,15 +24,14 @@ export class ClientComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.getMessages();
   }
-
+    
   private getMessages() {
     this.chatService
-      .getMessages()
-      .subscribe((message: string) => {
-        // adds new message at the beginning
-        this.messages = [message].concat(this.messages);
-        console.log(this.messages);
-      });
+    .getMessages()
+    .subscribe((message: string) => {
+      this.messages = [message].concat(this.messages);
+      console.log(this.messages);
+    });
   }
 
   ngOnDestroy(){

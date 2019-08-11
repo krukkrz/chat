@@ -14,3 +14,7 @@ body { margin: 0; font-family: 'Roboto', sans-serif; background-color: rgb(240, 
     overflow: hidden;
     transform: rotate(180deg);
 }
+
+.input{
+    margin-top: 10px
+}
